@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
 import 'package:food_course/provider/my_provider.dart';
 import 'package:food_course/screen/home_page.dart';
 import 'package:provider/provider.dart';
@@ -80,13 +81,20 @@ class CartPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         height: 65,
         decoration: BoxDecoration(
-            color: const Color(0xff3a3e3e), borderRadius: BorderRadius.circular(10)),
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: Colors.white10),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "\$ $total",
-              style: const TextStyle(color: Colors.white, fontSize: 30),
+              "\$$total",
+              style: const TextStyle(
+                color: AppColors.accent,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const Text(
               "Check Out",

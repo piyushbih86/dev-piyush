@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
 import 'package:food_course/screen/widget/my_text_field.dart';
 
 class SignUp extends StatefulWidget {
@@ -192,7 +193,6 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: globalKey,
-      backgroundColor: Colors.black,
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 50),
@@ -260,7 +260,7 @@ class _SignUpState extends State<SignUp> {
                             validation();
                           },
                           buttonName: "Register",
-                          color: Colors.red,
+                          color: AppColors.accent,
                           textColor: Colors.white,
                         ),
                       ],

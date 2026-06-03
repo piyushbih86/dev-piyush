@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
 import 'package:food_course/provider/my_provider.dart';
 import 'package:food_course/screen/cart_page.dart';
 import 'package:food_course/screen/detail_page.dart';
@@ -24,13 +25,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          scaffoldBackgroundColor: Color(0xff2b2b2b),
-          appBarTheme: AppBarTheme(
-            color: Color(0xff2b2b2b),
-          ),
-        ),
+        title: 'Food Delivery',
+        theme: AppTheme.dark,
         home: HomePage(),
         // home: StreamBuilder(
         //     stream: FirebaseAuth.instance.authStateChanges(),

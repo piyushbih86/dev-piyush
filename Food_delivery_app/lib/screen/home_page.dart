@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
 import 'package:food_course/modles/categories_modle.dart';
 import 'package:food_course/modles/food_categories_modle.dart';
 import 'package:food_course/modles/food_modle.dart';
@@ -44,9 +45,13 @@ class _HomePageState extends State<HomePage> {
             height: 80,
             width: 80,
             decoration: BoxDecoration(
-              image: DecorationImage(image: NetworkImage(image)),
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: NetworkImage(image),
+                fit: BoxFit.cover,
+              ),
+              color: AppColors.card,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.white12),
             ),
           ),
         ),
@@ -55,8 +60,9 @@ class _HomePageState extends State<HomePage> {
         ),
         Text(
           name,
-          style: TextStyle(
-            fontSize: 20,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
             color: Colors.white,
           ),
         )
@@ -188,7 +194,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       drawer: Drawer(
         child: Container(
-          color: Color(0xff2b2b2b),
+          color: AppColors.surface,
           child: SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -210,10 +216,7 @@ class _HomePageState extends State<HomePage> {
                 drawerItem(icon: Icons.person, name: "Profile"),
                 drawerItem(icon: Icons.add_shopping_cart, name: "Cart"),
                 drawerItem(icon: Icons.shop, name: "Order"),
-                Divider(
-                  thickness: 2,
-                  color: Colors.white,
-                ),
+                const Divider(),
                 ListTile(
                   leading: Text(
                     "Comunicate",
@@ -254,18 +257,11 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: TextField(
-              decoration: InputDecoration(
-                  hintText: "Search Food",
-                  hintStyle: TextStyle(color: Colors.white),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  filled: true,
-                  fillColor: Color(0xff3a3e3e),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(10))),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: "Search food...",
+                prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
+              ),
             ),
           ),
           SingleChildScrollView(

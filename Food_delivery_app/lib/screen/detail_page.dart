@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
 import 'package:food_course/provider/my_provider.dart';
 import 'package:food_course/screen/cart_page.dart';
 import 'package:food_course/screen/home_page.dart';
@@ -48,11 +49,13 @@ class _DetailPageState extends State<DetailPage> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Color(0xff3a3e3e),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10))),
+              decoration: const BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  topRight: Radius.circular(24),
+                ),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,12 +156,6 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xffe74c3c),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

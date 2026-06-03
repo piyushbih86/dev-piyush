@@ -20,7 +20,9 @@ class Categories extends StatelessWidget {
           },
         ),
       ),
-      body: GridView.count(
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: GridView.count(
           shrinkWrap: false,
           primary: false,
           crossAxisCount: 2,
@@ -46,7 +48,9 @@ class Categories extends StatelessWidget {
                   name: e.name,
                 ),
               )
-              .toList()),
+              .toList(),
+        ),
+      ),
     );
   }
 }

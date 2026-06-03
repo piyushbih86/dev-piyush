@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
 import 'package:food_course/screen/widget/my_text_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -95,9 +96,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: globalKey,
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
         leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
@@ -145,12 +144,6 @@ class _LoginPageState extends State<LoginPage> {
                     height: 60,
                     width: 200,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
                       onPressed: () {
                         validation();
                       },
@@ -162,15 +155,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "New user?",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: AppColors.textSecondary),
                 ),
                 Text(
-                  "Register now.",
-                  style: TextStyle(color: Colors.red),
-                )
+                  " Register now.",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ],
             )
           ],

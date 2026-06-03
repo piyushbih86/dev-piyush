@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_course/app_theme.dart';
+
 class BottomContainer extends StatelessWidget {
   final String image;
   final String name;
@@ -13,7 +15,10 @@ class BottomContainer extends StatelessWidget {
         height: 270,
         width: 220,
         decoration: BoxDecoration(
-            color: Color(0xff3a3e3e), borderRadius: BorderRadius.circular(20)),
+          color: AppColors.card,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white10),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -27,10 +32,11 @@ class BottomContainer extends StatelessWidget {
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
               trailing: Text(
-                "\$ $price",
-                style: TextStyle(
+                "\$$price",
+                style: const TextStyle(
                   fontSize: 20,
-                  color: Colors.white,
+                  color: AppColors.accent,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -38,31 +44,11 @@ class BottomContainer extends StatelessWidget {
               padding: const EdgeInsets.only(left: 12),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.star,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                  Icon(
-                    Icons.star,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                  Icon(
-                    Icons.star,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                  Icon(
-                    Icons.star,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                  Icon(
-                    Icons.star,
-                    size: 20,
-                    color: Colors.white,
-                  )
+                  const Icon(Icons.star, size: 18, color: AppColors.star),
+                  const Icon(Icons.star, size: 18, color: AppColors.star),
+                  const Icon(Icons.star, size: 18, color: AppColors.star),
+                  const Icon(Icons.star, size: 18, color: AppColors.star),
+                  Icon(Icons.star, size: 18, color: Colors.white24),
                 ],
               ),
             )
