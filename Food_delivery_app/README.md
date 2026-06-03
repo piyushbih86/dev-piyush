@@ -1,16 +1,35 @@
-# food_course
+# Food Delivery App
 
-A new Flutter project.
+A cross-platform **Flutter** food ordering app with a dark UI. Browse menus by category, view item details, manage a cart, and sign in with **Firebase Authentication**. Menu data is loaded from **Cloud Firestore**.
 
-## Getting Started
+![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)
+![Firebase](https://img.shields.io/badge/Firebase-Auth%20%7C%20Firestore%20%7C%20Storage-FFCA28?logo=firebase)
+![Dart](https://img.shields.io/badge/Dart-2.19+-0175C2?logo=dart)
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- **Home** — Category shortcuts (Burger, Recipe, Pizza, Drinks) and featured items from Firestore
+- **Category browsing** — Tap a category to see its items
+- **Food details** — Image, price, quantity selector, add to cart
+- **Shopping cart** — View items, adjust quantity, see totals
+- **Authentication** — Email/password sign-up and login (Firebase Auth)
+- **State management** — [Provider](https://pub.dev/packages/provider) for cart and Firestore-backed lists
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tech stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Layer        | Technology                          |
+|-------------|--------------------------------------|
+| Framework   | Flutter                              |
+| Backend     | Firebase (Auth, Firestore, Storage)  |
+| State       | Provider                             |
+| Language    | Dart                                 |
+
+
+## Prerequisites
+
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (stable channel recommended)
+- [Android Studio](https://developer.android.com/studio) or VS Code with Flutter extensions
+- A [Firebase](https://console.firebase.google.com/) project with:
+  - **Authentication** — Email/Password enabled
+  - **Cloud Firestore** — Database with your menu collections (see [Firestore structure](#firestore-structure))
+  - **Firebase Storage** (optional, for hosting images)
