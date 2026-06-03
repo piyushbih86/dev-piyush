@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_course/app_theme.dart';
-import 'package:food_course/screen/widget/my_text_field.dart';
+import 'package:khaanado/app_theme.dart';
+import 'package:khaanado/screen/widget/my_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,41 +18,17 @@ class _LoginPageState extends State<LoginPage> {
   bool loadding = false;
   RegExp regExp = RegExp(LoginPage.pattern.toString());
   GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
-  late UserCredential userCredential;
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   Future loginAuth() async {
-    try {
-      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email.text, password: password.text);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        // globalKey.currentState.showSnackBar(
-        //   const SnackBar(
-        //     content: Text('No user found for that email.'),
-        //   ),
-        // );
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("No user found for that email."),
-        ));
-      } else if (e.code == 'wrong-password') {
-        // globalKey.currentState.showSnackBar(
-        //   const SnackBar(
-        //     content: Text('Wrong password provided for that user.'),
-        //   ),
-        // );
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Wrong password provided for that user."),
-        ));
-        setState(() {
-          loadding = false;
-        });
-      }
-      setState(() {
-        loadding = false;
-      });
-    }
+    await Future.delayed(const Duration(milliseconds: 400));
+    setState(() {
+      loadding = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Login is running in offline mode."),
+    ));
   }
 
   void validation() {

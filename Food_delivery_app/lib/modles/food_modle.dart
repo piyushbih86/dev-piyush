@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
-class FoodModle{
+class FoodModle {
   final String image;
   final String name;
   final int price;

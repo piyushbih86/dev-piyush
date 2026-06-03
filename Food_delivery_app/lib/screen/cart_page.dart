@@ -1,138 +1,149 @@
 import 'package:flutter/material.dart';
-import 'package:food_course/app_theme.dart';
-import 'package:food_course/provider/my_provider.dart';
-import 'package:food_course/screen/home_page.dart';
+import 'package:khaanado/app_theme.dart';
+import 'package:khaanado/provider/my_provider.dart';
+import 'package:khaanado/screen/widget/app_food_image.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
-  Widget cartItem({
-    required String image,
-    required String name,
-    required int price,
-    required Function() onTap,
-    required int quantity,
-  }) {
-    return Row(
-      children: [
-        Container(
-          width: 170,
-          height: 170,
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(image),
-          ),
+  const CartPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = context.watch<MyProvider>();
+    final total = provider.totalprice();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Cart'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        const SizedBox(
-          width: 20,
-        ),
-        Expanded(
-            child: Stack(
-          alignment: Alignment.topRight,
-          children: [
-            Container(
-              height: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+      ),
+      bottomNavigationBar: provider.cartList.isEmpty
+          ? null
+          : Container(
+              margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              height: 64,
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: Colors.white10),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    name,
+                    '\$$total',
                     style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold),
+                      color: AppColors.accent,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const Text(
-                    "burger bhout acha hain",
-                    style: TextStyle(color: Colors.white),
+                    'Check Out',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Text(
-                    "\$ $price",
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "$quantity",
-                        style: const TextStyle(fontSize: 20, color: Colors.white),
-                      )
-                    ],
-                  )
                 ],
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
-              onPressed: onTap,
-            )
-          ],
-        )),
-      ],
-    );
-  }
-  Widget build(BuildContext context) {
-    MyProvider provider = Provider.of<MyProvider>(context);
-    int total = provider.totalprice();
-    return Scaffold(
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: 65,
-        decoration: BoxDecoration(
-          color: AppColors.card,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(color: Colors.white10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "\$$total",
-              style: const TextStyle(
-                color: AppColors.accent,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+      body: provider.cartList.isEmpty
+          ? const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 64,
+                    color: AppColors.textSecondary,
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Your cart is empty',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Add something tasty from the home screen',
+                    style: TextStyle(color: AppColors.textSecondary),
+                  ),
+                ],
               ),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: provider.cartList.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 12),
+              itemBuilder: (context, index) {
+                final item = provider.cartList[index];
+                return Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.card,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: Colors.white10),
+                  ),
+                  child: Row(
+                    children: [
+                      AppFoodImage(
+                        imagePath: item.image,
+                        name: item.name,
+                        size: 72,
+                        circular: true,
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Qty: ${item.quantity}',
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '\$${item.price * item.quantity}',
+                              style: const TextStyle(
+                                color: AppColors.accent,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: Colors.white70),
+                        onPressed: () => provider.deleteAt(index),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-            const Text(
-              "Check Out",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ),
-            );
-          },
-        ),
-      ),
-      body: ListView.builder(
-        itemCount: provider.cartList.length,
-        itemBuilder: (ctx, index) {
-          provider.getDeleteIndex(index);
-          return cartItem(
-            onTap: (){
-              provider.delete();
-            },
-            image: provider.cartList[index].image,
-            name: provider.cartList[index].name,
-            price: provider.cartList[index].price,
-            quantity: provider.cartList[index].quantity,
-          );
-        },
-      ),
     );
   }
 }

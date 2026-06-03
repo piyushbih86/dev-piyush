@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:food_course/app_theme.dart';
-import 'package:food_course/screen/widget/my_text_field.dart';
+import 'package:khaanado/app_theme.dart';
+import 'package:khaanado/screen/widget/my_text_field.dart';
 
 class SignUp extends StatefulWidget {
   static Pattern pattern =
@@ -13,7 +11,6 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool loading = false;
-  late UserCredential userCredential;
   RegExp regExp = RegExp(SignUp.pattern.toString());
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -22,61 +19,13 @@ class _SignUpState extends State<SignUp> {
   GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
 
   Future sendData() async {
-    try {
-      userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email.text,
-        password: password.text,
-      );
-      await FirebaseFirestore.instance
-          .collection('userData')
-          .doc(userCredential.user?.uid)
-          .set({
-        "firstName": firstName.text.trim(),
-        "lastName": lastName.text.trim(),
-        "email": email.text.trim(),
-        "userid": userCredential.user?.uid,
-        "password": password.text.trim(),
-      });
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        // globalKey.currentState.showSnackBar(
-        //   const SnackBar(
-        //     content: Text("The password provided is too weak."),
-        //   ),
-        // );
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("The password provided is too weak."),
-        ));
-      } else if (e.code == 'email-already-in-use') {
-        // globalKey.currentState.showSnackBar(
-        //   const SnackBar(
-        //     content: Text("The account already exists for that email"),
-        //   ),
-        // );
-
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("The account already exists for that email"),
-        ));
-      }
-    } catch (e) {
-      // globalKey.currentState.showSnackBar(
-      //   SnackBar(
-      //     content: Text(e.toString()),
-      //   ),
-      // );
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(e.toString()),
-      ));
-      setState(() {
-        loading = false;
-      });
-    }
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       loading = false;
     });
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Registration is running in offline mode."),
+    ));
   }
 
   void validation() {
@@ -175,7 +124,7 @@ class _SignUpState extends State<SignUp> {
       width: 120,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: color,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),

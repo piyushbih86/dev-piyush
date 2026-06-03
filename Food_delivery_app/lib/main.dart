@@ -1,18 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:food_course/app_theme.dart';
-import 'package:food_course/provider/my_provider.dart';
-import 'package:food_course/screen/cart_page.dart';
-import 'package:food_course/screen/detail_page.dart';
+import 'package:khaanado/app_theme.dart';
+import 'package:khaanado/provider/my_provider.dart';
 
-import 'package:food_course/screen/home_page.dart';
-import 'package:food_course/screen/login_page.dart';
+import 'package:khaanado/screen/home_page.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+void main() {
   runApp(MyApp());
 }
 
@@ -25,17 +18,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Food Delivery',
+        title: 'KhaanaDo',
         theme: AppTheme.dark,
-        home: HomePage(),
-        // home: StreamBuilder(
-        //     stream: FirebaseAuth.instance.authStateChanges(),
-        //     builder: (index, sncpshot) {
-        //       if (sncpshot.hasData) {
-        //         return HomePage();
-        //       }
-        //       return LoginPage();
-        //     }),
+        home: const HomePage(),
       ),
     );
   }

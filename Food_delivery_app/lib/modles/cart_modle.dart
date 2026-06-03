@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class CartModle {
   final String image;
   final String name;

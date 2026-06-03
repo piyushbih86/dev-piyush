@@ -1,56 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:food_course/modles/food_categories_modle.dart';
-import 'package:food_course/screen/detail_page.dart';
-import 'package:food_course/screen/home_page.dart';
-import 'package:food_course/screen/widget/bottom_Contianer.dart';
+import 'package:khaanado/modles/food_categories_modle.dart';
+import 'package:khaanado/screen/detail_page.dart';
+import 'package:khaanado/screen/widget/bottom_Contianer.dart';
 
 class Categories extends StatelessWidget {
-  List<FoodCategoriesModle> list = [];
-  Categories({super.key, required this.list});
+  final List<FoodCategoriesModle> list;
+
+  const Categories({super.key, required this.list});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.0,
+        title: const Text('Menu'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (contet) => HomePage()));
-          },
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: GridView.count(
-          shrinkWrap: false,
-          primary: false,
-          crossAxisCount: 2,
-          childAspectRatio: 0.8,
-          crossAxisSpacing: 20,
-          mainAxisSpacing: 20,
-          children: list
-              .map(
-                (e) => BottomContainer(
+      body: list.isEmpty
+          ? const Center(
+              child: Text(
+                'No items in this category',
+                style: TextStyle(color: Colors.white70),
+              ),
+            )
+          : GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.78,
+                crossAxisSpacing: 14,
+                mainAxisSpacing: 14,
+              ),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                final item = list[index];
+                return BottomContainer(
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
+                    Navigator.push(
+                      context,
                       MaterialPageRoute(
-                        builder: (context) => DetailPage(
-                          image: e.image,
-                          name: e.name,
-                          price: e.price,
+                        builder: (_) => DetailPage(
+                          image: item.image,
+                          name: item.name,
+                          price: item.price,
                         ),
                       ),
                     );
                   },
-                  image: e.image,
-                  price: e.price,
-                  name: e.name,
-                ),
-              )
-              .toList(),
-        ),
-      ),
+                  image: item.image,
+                  price: item.price,
+                  name: item.name,
+                );
+              },
+            ),
     );
   }
 }

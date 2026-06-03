@@ -1,6 +1,6 @@
 {
-    "name": "food_course",
-    "short_name": "food_course",
+    "name": "KhaanaDo",
+    "short_name": "KhaanaDo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,340 +1,236 @@
 import 'package:flutter/material.dart';
-import 'package:food_course/app_theme.dart';
-import 'package:food_course/modles/categories_modle.dart';
-import 'package:food_course/modles/food_categories_modle.dart';
-import 'package:food_course/modles/food_modle.dart';
-import 'package:food_course/provider/my_provider.dart';
-import 'package:food_course/screen/categories.dart';
-import 'package:food_course/screen/detail_page.dart';
-import 'package:food_course/screen/widget/bottom_Contianer.dart';
+import 'package:khaanado/app_theme.dart';
+import 'package:khaanado/modles/food_categories_modle.dart';
+import 'package:khaanado/modles/food_modle.dart';
+import 'package:khaanado/provider/my_provider.dart';
+import 'package:khaanado/screen/cart_page.dart';
+import 'package:khaanado/screen/categories.dart';
+import 'package:khaanado/screen/detail_page.dart';
+import 'package:khaanado/screen/widget/app_food_image.dart';
+import 'package:khaanado/screen/widget/bottom_Contianer.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
-class _HomePageState extends State<HomePage> {
-  // 1st
-  List<CategoriesModle> burgerList = [];
-
-  ///2nd
-  List<CategoriesModle> recipeList = [];
-  //3rd
-  List<CategoriesModle> pizzaList = [];
-  //4th
-  List<CategoriesModle> drinkList = [];
-
-  List<FoodModle> singleFoodList = [];
-
-  List<FoodCategoriesModle> burgerCategoriesList = [];
-  List<FoodCategoriesModle> recipeCategoriesList = [];
-  List<FoodCategoriesModle> pizzaCategoriesList = [];
-  List<FoodCategoriesModle> drinkCategoriesList = [];
-
-  Widget categoriesContainer(
-      {required Function() onTap,
-      required String image,
-      required String name}) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Container(
-            margin: EdgeInsets.only(left: 20),
-            height: 80,
-            width: 80,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(image),
-                fit: BoxFit.cover,
-              ),
-              color: AppColors.card,
+  Widget _categoryChip({
+    required BuildContext context,
+    required String image,
+    required String name,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 88,
+        margin: const EdgeInsets.only(right: 14),
+        child: Column(
+          children: [
+            ClipRRect(
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: Colors.white12),
+              child: AppFoodImage(
+                imagePath: image,
+                name: name,
+                size: 72,
+                circular: false,
+              ),
             ),
-          ),
+            const SizedBox(height: 8),
+            Text(
+              name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          name,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        )
-      ],
+      ),
     );
   }
 
-  Widget drawerItem({required String name, required IconData icon}) {
+  Widget _drawerItem({required String name, required IconData icon}) {
     return ListTile(
-      leading: Icon(
-        icon,
-        color: Colors.white,
-      ),
+      leading: Icon(icon, color: Colors.white),
       title: Text(
         name,
-        style: TextStyle(fontSize: 20, color: Colors.white),
+        style: const TextStyle(fontSize: 18, color: Colors.white),
       ),
     );
   }
 
-  ////1st
-  Widget burger() {
-    return Row(
-      children: burgerList
-          .map((e) => categoriesContainer(
-              image: e.image,
-              name: e.name,
-              onTap: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => Categories(
-                      list: burgerCategoriesList,
-                    ),
-                  ),
-                );
-              }))
-          .toList(),
+  void _openCategory(
+    BuildContext context,
+    List<FoodCategoriesModle> list,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => Categories(list: list)),
     );
   }
 
-////2nd
-  Widget recipe() {
-    return Row(
-      children: recipeList
-          .map((e) => categoriesContainer(
-                image: e.image,
-                name: e.name,
-                onTap: () {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          Categories(list: recipeCategoriesList),
-                    ),
-                  );
-                },
-              ))
-          .toList(),
-    );
-  }
-
-  //3rd
-  Widget pizza() {
-    return Row(
-      children: pizzaList
-          .map(
-            (e) => categoriesContainer(
-              image: e.image,
-              name: e.name,
-              onTap: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => Categories(list: pizzaCategoriesList),
-                  ),
-                );
-              },
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  /////4th
-  Widget drink() {
-    return Row(
-      children: drinkList
-          .map(
-            (e) => categoriesContainer(
-              image: e.image,
-              name: e.name,
-              onTap: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => Categories(list: drinkCategoriesList),
-                  ),
-                );
-              },
-            ),
-          )
-          .toList(),
+  void _openDetail(BuildContext context, FoodModle item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DetailPage(
+          image: item.image,
+          name: item.name,
+          price: item.price,
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    MyProvider provider = Provider.of<MyProvider>(context);
-    // 1st
-    provider.getBurgerCategory();
-    burgerList = provider.throwBurgerList;
-    //2nd
-    provider.getRecipeCategory();
-    recipeList = provider.throwRecipeList;
-    //3rd
-    provider.getDrinkCategory();
-    drinkList = provider.throwDrinkList;
-    // 4th
-    provider.getPizzaCategory();
-    pizzaList = provider.throwPizzaList;
-    //////////////single food list/////////
-    provider.getFoodList();
-    singleFoodList = provider.throwFoodModleList;
-    provider.getBurgerCategoriesList();
-    burgerCategoriesList = provider.throwBurgerCategoriesList;
-    provider.getrecipeCategoriesList();
-    recipeCategoriesList = provider.throwRecipeCategoriesList;
-    provider.getPizzaCategoriesList();
-    pizzaCategoriesList = provider.throwPizzaCategoriesList;
-    provider.getDrinkCategoriesList();
-    drinkCategoriesList = provider.throwDrinkCategoriesList;
+    final provider = context.watch<MyProvider>();
+    final categories = [
+      ...provider.throwBurgerList,
+      ...provider.throwRecipeList,
+      ...provider.throwPizzaList,
+      ...provider.throwDrinkList,
+    ];
+    final categoryLists = [
+      provider.throwBurgerCategoriesList,
+      provider.throwRecipeCategoriesList,
+      provider.throwPizzaCategoriesList,
+      provider.throwDrinkCategoriesList,
+    ];
+    final foods = provider.throwFoodModleList;
+
     return Scaffold(
       drawer: Drawer(
         child: Container(
           color: AppColors.surface,
-          child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('images/background.jpg'),
-                    ),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage('images/profile.jpg'),
-                  ),
-                  accountName: Text("Flutter Baba"),
-                  accountEmail: Text("AqeelBaloch@gmail.com"),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              UserAccountsDrawerHeader(
+                decoration: const BoxDecoration(color: AppColors.card),
+                currentAccountPicture: CircleAvatar(
+                  backgroundColor: AppColors.accent,
+                  child: const Icon(Icons.person, color: Colors.white, size: 36),
                 ),
-                drawerItem(icon: Icons.person, name: "Profile"),
-                drawerItem(icon: Icons.add_shopping_cart, name: "Cart"),
-                drawerItem(icon: Icons.shop, name: "Order"),
-                const Divider(),
-                ListTile(
-                  leading: Text(
-                    "Comunicate",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-                // Text(
-                //   "Comunicate",
-                //   style: TextStyle(
-                //     color: Colors.white,
-                //     fontSize: 20,
-                //   ),
-                // ),
-                drawerItem(icon: Icons.lock, name: "Change"),
-                drawerItem(icon: Icons.exit_to_app, name: "Log Out"),
-              ],
-            ),
+                accountName: const Text('KhaanaDo User'),
+                accountEmail: const Text('hello@khaanado.app'),
+              ),
+              _drawerItem(icon: Icons.person, name: 'Profile'),
+              _drawerItem(
+                icon: Icons.add_shopping_cart,
+                name: 'Cart',
+              ),
+              _drawerItem(icon: Icons.shop, name: 'Orders'),
+              const Divider(),
+              _drawerItem(icon: Icons.lock, name: 'Change password'),
+              _drawerItem(icon: Icons.exit_to_app, name: 'Log out'),
+            ],
           ),
         ),
       ),
       appBar: AppBar(
-        elevation: 0.0,
+        title: const Text(
+          'KhaanaDo',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(9.0),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const CartPage()),
+              );
+            },
+          ),
+          const Padding(
+            padding: EdgeInsets.only(right: 12),
             child: CircleAvatar(
-              backgroundImage: AssetImage('images/profile.jpg'),
+              backgroundColor: AppColors.accent,
+              child: Icon(Icons.person, color: Colors.white),
             ),
-          )
+          ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                hintText: "Search food...",
-                prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+              child: TextField(
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  hintText: 'Search food...',
+                  prefixIcon: Icon(Icons.search, color: AppColors.textSecondary),
+                ),
               ),
             ),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                burger(),
-                recipe(),
-                pizza(),
-                drink(),
-                // categoriesContainer(image: 'images/1.png', name: "All"),
-                // categoriesContainer(image: 'images/2.png', name: "Burger"),
-                // categoriesContainer(image: 'images/3.png', name: "Recipe"),
-                // categoriesContainer(image: 'images/4.png', name: "Pizza"),
-                // categoriesContainer(image: 'images/5.png', name: "Drink"),
-              ],
+            SizedBox(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final item = categories[index];
+                  final list = index < categoryLists.length
+                      ? categoryLists[index]
+                      : provider.throwBurgerCategoriesList;
+                  return _categoryChip(
+                    context: context,
+                    image: item.image,
+                    name: item.name,
+                    onTap: () => _openCategory(context, list),
+                  );
+                },
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            height: 510,
-            child: GridView.count(
-                shrinkWrap: false,
-                primary: false,
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
-                children: singleFoodList
-                    .map(
-                      (e) => BottomContainer(
-                        onTap: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => DetailPage(
-                                image: e.image,
-                                name: e.name,
-                                price: e.price,
-                              ),
-                            ),
-                          );
-                        },
-                        image: e.image,
-                        price: e.price,
-                        name: e.name,
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Text(
+                'Popular near you',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Expanded(
+              child: foods.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No items yet',
+                        style: TextStyle(color: AppColors.textSecondary),
                       ),
                     )
-                    .toList()
-                // children: [
-                //   // bottonContainer(
-                //   //   image: 'images/2.png',
-                //   //   name: 'burger1',
-                //   //   price: 12,
-                //   // ),
-                //   // bottonContainer(
-                //   //   image: 'images/2.png',
-                //   //   name: 'burger1',
-                //   //   price: 12,
-                //   // ),
-                //   // bottonContainer(
-                //   //   image: 'images/2.png',
-                //   //   name: 'burger1',
-                //   //   price: 12,
-                //   // ),
-                //   // bottonContainer(
-                //   //   image: 'images/2.png',
-                //   //   name: 'burger1',
-                //   //   price: 12,
-                //   // ),
-                // ],
-                ),
-          )
-        ],
+                  : GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.78,
+                        crossAxisSpacing: 14,
+                        mainAxisSpacing: 14,
+                      ),
+                      itemCount: foods.length,
+                      itemBuilder: (context, index) {
+                        final item = foods[index];
+                        return BottomContainer(
+                          onTap: () => _openDetail(context, item),
+                          image: item.image,
+                          price: item.price,
+                          name: item.name,
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }
