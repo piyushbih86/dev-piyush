@@ -1,31 +1,42 @@
 # KhaanaDo
 
-A cross-platform **Flutter** food ordering app with a dark UI. Browse menus by category, view item details, and manage a cart with an offline demo dataset.
+Production-style Flutter food delivery app: catalog, cart, checkout, live order tracking, and auth.
 
-![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)
-![Dart](https://img.shields.io/badge/Dart-2.19+-0175C2?logo=dart)
+Architecture follows the same patterns used in PlaySimple Play-to-Earn apps — thin screens, GetIt controllers, centralized constants, overlay toasters, `BasePopup`, and auto-surfacing (FTUE).
 
-## Features
+## Run
 
-- **Home** — Category shortcuts (Burger, Recipe, Pizza, Drinks) and featured demo items
-- **Category browsing** — Tap a category to see its items
-- **Food details** — Image, price, quantity selector, add to cart
-- **Shopping cart** — View items, adjust quantity, see totals
-- **Authentication UI** — Email/password sign-up and login screens in local offline mode
-- **State management** — [Provider](https://pub.dev/packages/provider) for cart and in-memory lists
+```bash
+cd Food_delivery_app
+flutter pub get
+flutter run
+```
 
-## Tech stack
+Demo login: `demo@khaanado.app` / `Demo@123`  
+Promo codes: `KHAANA10` (10% off), `FIRST50` (₹50 off over ₹199), `FAILME` (forced checkout error)
 
-| Layer        | Technology                          |
-|-------------|--------------------------------------|
-| Framework   | Flutter                              |
-| Backend     | Local in-memory demo data            |
-| State       | Provider                             |
-| Language    | Dart                                 |
+## Architecture
 
+```
+lib/
+  constants/          # colors, copy, assets, routes, tracking events
+  controller/         # auth, catalog, cart, orders, toaster
+  model/              # domain + API request/result types
+  services/           # storage, mock API, pricing, logger
+  surfacing_manager/  # first-open FTUE (P2E-style auto-surface)
+  ui/
+    custom_widgets/   # button, toaster, nav, cards
+    popups/           # BasePopup + feature popups
+    screens/          # splash, auth, home, cart, checkout, tracking
+```
 
-## Prerequisites
+- **Screens** own layout and lifecycle only.
+- **Controllers** own business rules and persistence (`ChangeNotifier` + GetIt).
+- **MockApiClient.placeOrder** uses an `onResponse(success, data, error)` callback, same shape as P2E API controllers.
+- **Cart / session / orders** persist through `KeyValueStore` (SharedPreferences in app, `MemoryStore` in tests).
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install) (stable channel recommended)
-- [Android Studio](https://developer.android.com/studio) or VS Code with Flutter extensions
-- Internet access for loading demo network images
+## Test
+
+```bash
+flutter test
+```
